@@ -1,0 +1,16 @@
+# Ignore generated FAISS index files and JSON chunks
+*.faiss
+*_chunks.json
+
+# Ignore Python virtual environment
+venv/
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
