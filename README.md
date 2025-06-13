@@ -314,10 +314,7 @@ The entry in `claude_desktop_config.json` would look like this:
 ```json
 {
   "mcpServers": {
-    // ... any other servers you have configured ...
-
     "local-book-rag": {
-
       "command": "/Users/ma3u/projects/bookMCPServer/venv/bin/python",
       "args": [
         "mcp_server_vector.py",
