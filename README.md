@@ -10,26 +10,12 @@ This setup is a foundational example of a Retrieval Augmented Generation (RAG) c
 ## Table of Contents
 
 - [Project Overview](#project-overview)
-  - [Core Functionality](#core-functionality)
-  - [Technology Stack](#technology-stack)
-- [Preparing Your Text Data (PDF to TXT)](#preparing-your-text-data-pdf-to-txt)
-  - [Using `pdftotext` (Command-Line)](#using-pdftotext-command-line)
+- [Preparing Your Text Data](#preparing-your-text-data)
 - [Setup Instructions](#setup-instructions)
-  - [1. Virtual Environment](#1-virtual-environment)
-  - [2. Install Dependencies](#2-install-dependencies)
 - [Usage](#usage)
-  - [1. Data Ingestion](#1-data-ingestion)
-  - [2. Start the MCP Server](#2-start-the-mcp-server)
-  - [3. Query the MCP Server](#3-query-the-mcp-server)
-- [Integrating with Claude Desktop via `claude_desktop_config.json`](#3-integrating-with-claude-desktop-via-claude_desktop_configjson)
+- [Integrating with Claude Desktop](#integrating-with-claude-desktop)
 - [Troubleshooting](#troubleshooting)
-  - [Common Errors During Ingestion](#common-errors-during-ingestion)
-  - [Common Errors During Server Startup](#common-errors-during-server-startup)
-  - [Common Errors When Querying](#common-errors-when-querying)
 - [Customization and Further Development](#customization-and-further-development)
-  - [Changing the Sentence Transformer Model](#changing-the-sentence-transformer-model)
-  - [Modifying Text Chunking](#modifying-text-chunking)
-  - [Extending the MCP Server](#extending-the-mcp-server)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -49,11 +35,11 @@ This setup is a foundational example of a Retrieval Augmented Generation (RAG) c
 - **Requests**: For the client to make HTTP requests to the MCP server.
 - **MCP (Model Context Protocol)**: The standard used for communication between the client and the server.
 
-## Preparing Your Text Data (PDF to TXT)
+## Preparing Your Text Data
 
 If your book or document is in PDF format, you'll need to convert it to a plain text (`.txt`) file before using the `vector_db_ingest.py` script. Here are a couple of common methods:
 
-### Using `pdftotext` (Command-Line)
+### Using pdftotext
 
 `pdftotext` is a utility that's part of the Poppler PDF rendering library.
 
@@ -263,28 +249,27 @@ The location of this file varies by operating system:
 
 **B. Add the Book MCP Server Configuration:**
 
-Open `claude_desktop_config.json` in a text editor. You will see an `mcpServers` object. You need to add a new entry for your Book MCP Server within this object.
+Open `claude_desktop_config.json` in a text editor. You will see an `mcpServers` object. You need to add a new entry for your Book MCP Server within this object. If you have other servers configured, add the `"book-search"` entry alongside them.
 
-Here's a template for the entry:
+Here is an example of what the `mcpServers` object might look like with the new entry:
 
 ```json
 {
   "mcpServers": {
-    // ... other existing server configurations ...
-
-    "book-search": { // You can name this key whatever you like, e.g., "my-book-mcp"
-
-      "command": "/path/to/your/project/venv/bin/python", // Absolute path to Python in your venv
+    "book-search": {
+      "command": "/path/to/your/project/venv/bin/python",
       "args": [
-        "mcp_server_vector.py", // Name of your server script
-        "book_index.faiss"      // Name of your FAISS index file
+        "mcp_server_vector.py",
+        "book_index.faiss"
       ],
-      "cwd": "/path/to/your/project/", // Absolute path to your project's root directory
-      "env": {} // Optional: if your server needs specific environment variables
+      "cwd": "/path/to/your/project/",
+      "env": {}
     }
   }
 }
 ```
+
+## Integrating with Claude Desktop
 
 **C. Explanation of Configuration Fields:**
 
@@ -344,9 +329,9 @@ Once configured and Claude Desktop is restarted:
 
 This direct integration allows Claude to manage the server's lifecycle and makes querying your local book data much more convenient.
 
-### Troubleshooting
+## Troubleshooting
 
-#### Common Errors
+### Common Errors
 
 - **`ModuleNotFoundError`**: Ensure your virtual environment is active AND you are using the correct Python interpreter path (e.g., `./venv/bin/python`) for all scripts.
 - **`Connection refused` (from client)**: Verify that `mcp_server_vector.py` is running in a separate terminal and has successfully started on the expected port (default 8000).
